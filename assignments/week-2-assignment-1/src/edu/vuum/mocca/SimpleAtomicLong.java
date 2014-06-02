@@ -23,13 +23,24 @@ class SimpleAtomicLong
     /**
      * The ReentrantReadWriteLock used to serialize access to mValue.
      */
-    // TODO - add the implementation
+
+    // TODO -- you fill in here by replacing the null with an
+    // initialization of ReentrantReadWriteLock.
+    
+    // START SOLUTION
+    private ReentrantReadWriteLock mRWLock = new ReentrantReadWriteLock();
+    // END SOLUTION
 
     /**
      * Creates a new SimpleAtomicLong with the given initial value.
      */
-    public SimpleAtomicLong(long initialValue) {
-        // TODO - you fill in here
+    public SimpleAtomicLong(long initialValue)
+    {
+        // TODO -- you fill in here
+    	
+    	// START SOLUTION
+    	mValue = initialValue;
+    	// END SOLUTION
     }
 
     /**
@@ -37,8 +48,19 @@ class SimpleAtomicLong
      * 
      * @returns The current value
      */
-    public long get() {
-        // TODO - you fill in here
+    public long get()
+    {
+    	long value;
+
+        // TODO -- you fill in here
+        
+        // START SOLUTION
+        mRWLock.readLock().lock();
+        value = mValue;
+        mRWLock.readLock().unlock();
+        // END SOLUTION
+
+        return value;
     }
 
     /**
@@ -46,8 +68,19 @@ class SimpleAtomicLong
      *
      * @returns the updated value
      */
-    public long decrementAndGet() {
-        // TODO - you fill in here
+    public long decrementAndGet()
+    {
+        long value = 0;
+
+        // TODO -- you fill in here
+        
+        // START SOLUTION
+        mRWLock.writeLock().lock();
+        value = --mValue;
+        mRWLock.writeLock().unlock();
+        // END SOLUTION
+
+        return value;
     }
 
     /**
@@ -55,8 +88,19 @@ class SimpleAtomicLong
      *
      * @returns the previous value
      */
-    public long getAndIncrement() {
-        // TODO - you fill in here
+    public long getAndIncrement()
+    {
+        long value = 0;
+
+        // TODO -- you fill in here
+        
+        // START SOLUTION
+        mRWLock.writeLock().lock();
+        value = mValue++;
+        mRWLock.writeLock().unlock();
+        // END SOLUTION
+
+        return value;
     }
 
     /**
@@ -64,8 +108,19 @@ class SimpleAtomicLong
      *
      * @returns the previous value
      */
-    public long getAndDecrement() {
-        // TODO - you fill in here
+    public long getAndDecrement()
+    {
+        long value = 0;
+
+        // TODO -- you fill in here
+        
+        // START SOLUTION
+        mRWLock.writeLock().lock();
+        value = mValue--;
+        mRWLock.writeLock().unlock();
+        // END SOLUTION
+
+        return value;
     }
 
     /**
@@ -73,8 +128,19 @@ class SimpleAtomicLong
      *
      * @returns the updated value
      */
-    public long incrementAndGet() {
-        // TODO - you fill in here
+    public long incrementAndGet()
+    {
+        long value = 0;
+
+        // TODO -- you fill in here
+        
+        // START SOLUTION
+        mRWLock.writeLock().lock();
+        value = ++mValue;
+        mRWLock.writeLock().unlock();
+        // END SOLUTION
+
+        return value;
     }
 }
 
