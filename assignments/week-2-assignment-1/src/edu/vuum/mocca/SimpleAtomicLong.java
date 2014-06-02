@@ -23,7 +23,10 @@ class SimpleAtomicLong
 
     // TODO -- you fill in here by replacing the null with an
     // initialization of ReentrantReadWriteLock.
-    private ReentrantReadWriteLock mRWLock = null;
+    
+    // START SOLUTION
+    private ReentrantReadWriteLock mRWLock = new ReentrantReadWriteLock();
+    // END SOLUTION
 
     /**
      * Creates a new SimpleAtomicLong with the given initial value.
@@ -31,6 +34,10 @@ class SimpleAtomicLong
     public SimpleAtomicLong(long initialValue)
     {
         // TODO -- you fill in here
+    	
+    	// START SOLUTION
+    	mValue = initialValue;
+    	// END SOLUTION
     }
 
     /**
@@ -40,9 +47,15 @@ class SimpleAtomicLong
      */
     public long get()
     {
-        long value;
+    	long value;
 
         // TODO -- you fill in here
+        
+        // START SOLUTION
+        mRWLock.readLock().lock();
+        value = mValue;
+        mRWLock.readLock().unlock();
+        // END SOLUTION
 
         return value;
     }
@@ -57,6 +70,12 @@ class SimpleAtomicLong
         long value = 0;
 
         // TODO -- you fill in here
+        
+        // START SOLUTION
+        mRWLock.writeLock().lock();
+        value = --mValue;
+        mRWLock.writeLock().unlock();
+        // END SOLUTION
 
         return value;
     }
@@ -71,6 +90,12 @@ class SimpleAtomicLong
         long value = 0;
 
         // TODO -- you fill in here
+        
+        // START SOLUTION
+        mRWLock.writeLock().lock();
+        value = mValue++;
+        mRWLock.writeLock().unlock();
+        // END SOLUTION
 
         return value;
     }
@@ -85,6 +110,12 @@ class SimpleAtomicLong
         long value = 0;
 
         // TODO -- you fill in here
+        
+        // START SOLUTION
+        mRWLock.writeLock().lock();
+        value = mValue--;
+        mRWLock.writeLock().unlock();
+        // END SOLUTION
 
         return value;
     }
@@ -99,6 +130,12 @@ class SimpleAtomicLong
         long value = 0;
 
         // TODO -- you fill in here
+        
+        // START SOLUTION
+        mRWLock.writeLock().lock();
+        value = ++mValue;
+        mRWLock.writeLock().unlock();
+        // END SOLUTION
 
         return value;
     }
