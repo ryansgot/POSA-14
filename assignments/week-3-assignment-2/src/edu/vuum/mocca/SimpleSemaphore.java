@@ -78,7 +78,7 @@ public class SimpleSemaphore {
     	try {
     		permitsAvailable.incrementAndGet();
     	} finally {
-    		c.notify();
+    		c.signal();
     		rl.unlock();
     	}
     	// END SOLUTION
