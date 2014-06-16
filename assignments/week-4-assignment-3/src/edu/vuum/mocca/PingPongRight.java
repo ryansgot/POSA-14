@@ -50,13 +50,22 @@ public class PingPongRight {
          */
         // TODO - You fill in here.
 
+        // START SOLUTION
+        private final String stringToPrint;
+        // END SOLUTION
+        
         /**
          * Two SimpleSemaphores use to alternate pings and pongs.  You
          * can use an array of SimpleSemaphores or just define them as
          * two data members.
          */
         // TODO - You fill in here.
-
+        
+        // START SOLUTION
+        private final SimpleSemaphore firstSema;
+        private final SimpleSemaphore secondSema;
+        // END SOLUTION
+        
         /**
          * Constructor initializes the data member(s).
          */
@@ -65,6 +74,13 @@ public class PingPongRight {
                                   SimpleSemaphore semaphoreTwo,
                                   int maxIterations) {
             // TODO - You fill in here.
+        	
+        	// START SOLUTION
+        	this.stringToPrint = stringToPrint;
+        	firstSema = semaphoreOne;
+        	secondSema = semaphoreTwo;
+        	mMaxLoopIterations = maxIterations;
+        	// END SOLUTION
         }
 
         /**
@@ -79,13 +95,29 @@ public class PingPongRight {
              */
 
             // TODO - You fill in here.
+        	
+        	// START SOLUTION
+        	int iteration = 1;
+        	while (mMaxLoopIterations >= iteration) {
+        		acquire();
+        		System.out.println(stringToPrint + "(" + iteration + ")");
+        		release();
+        		iteration++;
+        	}
+        	mLatch.countDown();
+        	// END SOLUTION
         }
 
         /**
          * Method for acquiring the appropriate SimpleSemaphore.
          */
         private void acquire() {
+        	//System.out.println("Acquiring the " + stringToPrint + " semaphore.");
             // TODO fill in here
+        	
+        	// START SOLUTION
+        	firstSema.acquireUninterruptibly();
+        	// END SOLUTION
         }
 
         /**
@@ -93,6 +125,11 @@ public class PingPongRight {
          */
         private void release() {
             // TODO fill in here
+        	//System.out.println(stringToPrint + " Thread releasing the other semaphore.");
+        	
+        	// START SOLUTION
+        	secondSema.release();
+        	// END SOLUTION
         }
     }
 
@@ -107,37 +144,50 @@ public class PingPongRight {
 
         // TODO initialize this by replacing null with the appropriate
         // constructor call.
-        mLatch = null;
+        mLatch = new CountDownLatch(2);
 
         // Create the ping and pong SimpleSemaphores that control
         // alternation between threads.
 
         // TODO - You fill in here, make pingSema start out unlocked.
-        SimpleSemaphore pingSema = null;
+        
+        // START SOLUTION
+        SimpleSemaphore pingSema = new SimpleSemaphore(1, true);
+        // END SOLUTION
+        
         // TODO - You fill in here, make pongSema start out locked.
-        SimpleSemaphore pongSema = null;
-
+        
+        // START SOLUTION
+        SimpleSemaphore pongSema = new SimpleSemaphore(0, true);
+        // END SOLUTION
+        
         System.out.println(startString);
 
         // Create the ping and pong threads, passing in the string to
         // print and the appropriate SimpleSemaphores.
-        PlayPingPongThread ping = new PlayPingPongThread(/*
-                                                          * TODO - You fill in
-                                                          * here
-                                                          */);
-        PlayPingPongThread pong = new PlayPingPongThread(/*
-                                                          * TODO - You fill in
-                                                          * here
-                                                          */);
+        
+        // START SOLUTION
+        PlayPingPongThread ping = new PlayPingPongThread(pingString, pingSema, pongSema, maxIterations);
+        PlayPingPongThread pong = new PlayPingPongThread(pongString, pongSema, pingSema, maxIterations);
+        // END SOLUTION
 
         // TODO - Initiate the ping and pong threads, which will call
         // the run() hook method.
-
+        
+        // START SOLUTION
+        ping.start();
+        pong.start();
+        // END SOLUTION
+        
         // TODO - replace the following line with a barrier
         // synchronizer call to mLatch that waits for both threads to
         // finish.
-        throw new java.lang.InterruptedException();
-
+        
+        // START SOLUTION 
+        //throw new java.lang.InterruptedException();
+        mLatch.await();
+        // END SOLUTION
+        
         System.out.println(finishString);
     }
 
