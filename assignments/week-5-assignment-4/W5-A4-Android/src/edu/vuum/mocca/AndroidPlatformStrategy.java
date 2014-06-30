@@ -65,7 +65,7 @@ public class AndroidPlatformStrategy extends PlatformStrategy
     	// START SOLUTION
     	mActivity.get().runOnUiThread(new Runnable() {
     		public void run() {
-    			mTextViewOutput.append(outputString);
+    			mTextViewOutput.append(outputString + "\n");
     		}
     	});
     	// END SOLUTION
