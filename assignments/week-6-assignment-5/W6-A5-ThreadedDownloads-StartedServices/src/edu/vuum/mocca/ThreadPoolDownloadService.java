@@ -49,7 +49,10 @@ public class ThreadPoolDownloadService extends Service {
         // FixedThreadPool Executor that's configured to use
         // MAX_THREADS. Use a factory method in the Executors class.
 
-        mExecutor = null;
+    	// START SOLUTION
+        //mExecutor = null;
+    	mExecutor = Executors.newFixedThreadPool(MAX_THREADS);
+        // END SOLUTION
     }
 
     /**
@@ -74,7 +77,10 @@ public class ThreadPoolDownloadService extends Service {
         // invocation of the appropriate factory method in
         // DownloadUtils that makes a MessengerIntent.
 
-        return null;
+    	// START SOLUTION
+        //return null;
+    	return DownloadUtils.makeMessengerIntent(context, ThreadPoolDownloadService.class, handler, uri);
+        // END SOLUTION
     }
 
     /**
@@ -93,7 +99,17 @@ public class ThreadPoolDownloadService extends Service {
         // the uri in the intent and returns the file's pathname using
         // a Messenger who's Bundle key is defined by DownloadUtils.MESSENGER_KEY.
 
-        Runnable downloadRunnable = null;
+    	// START SOLUTION
+        //Runnable downloadRunnable = null;
+        Runnable downloadRunnable = new Runnable() {
+			@Override
+			public void run() {
+		    	Messenger messenger = (Messenger) intent.getExtras().get(DownloadUtils.MESSENGER_KEY);
+		    	DownloadUtils.downloadAndRespond(getApplicationContext(), intent.getData(), messenger);
+			}
+        	
+        };
+        // END SOLUTION
 
         mExecutor.execute(downloadRunnable);
       
